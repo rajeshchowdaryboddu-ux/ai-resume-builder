@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your free AI Resume Builder account and start crafting professional, job-tailored resumes instantly.">
+  <title>Register — AI Resume Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="page-wrapper">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-inner">
+        <a href="login.html" class="nav-brand">
+          <div class="nav-brand-icon">✦</div>
+          <span class="nav-brand-text">ResumeAI</span>
+        </a>
+        <div class="nav-links">
+          <a href="login.html" class="nav-link">Login</a>
+          <a href="register.html" class="nav-link active">Register</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Auth Card -->
+    <main class="auth-page">
+      <div class="auth-card">
+
+        <div class="auth-header">
+          <div class="auth-icon">🚀</div>
+          <h1 class="auth-title">Get Started Free</h1>
+          <p class="auth-subtitle">Create your account and build AI-powered resumes</p>
+        </div>
+
+        <form id="registerForm" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" for="name">Full Name</label>
+            <input class="form-input" type="text" id="name" placeholder="John Doe" required autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input class="form-input" type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input class="form-input" type="password" id="password" placeholder="Min. 6 characters" required autocomplete="new-password">
+          </div>
+
+          <button class="btn btn-primary btn-full mt-2" id="registerBtn" onclick="register()">
+            <span class="btn-text">Create Account</span>
+          </button>
+        </form>
+
+        <p class="auth-footer">
+          Already have an account? <a href="login.html">Sign in →</a>
+        </p>
+
+      </div>
+    </main>
+
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

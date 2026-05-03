@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to AI Resume Builder — craft professional resumes tailored to any job description with the power of AI.">
+  <title>Login — AI Resume Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="page-wrapper">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-inner">
+        <a href="login.html" class="nav-brand">
+          <div class="nav-brand-icon">✦</div>
+          <span class="nav-brand-text">ResumeAI</span>
+        </a>
+        <div class="nav-links">
+          <a href="login.html" class="nav-link active">Login</a>
+          <a href="register.html" class="nav-link">Register</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Auth Card -->
+    <main class="auth-page">
+      <div class="auth-card">
+
+        <div class="auth-header">
+          <div class="auth-icon">🔐</div>
+          <h1 class="auth-title">Welcome Back</h1>
+          <p class="auth-subtitle">Sign in to your AI Resume Builder account</p>
+        </div>
+
+        <form id="loginForm" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input class="form-input" type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input class="form-input" type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+
+          <button class="btn btn-primary btn-full mt-2" id="loginBtn" onclick="login()">
+            <span class="btn-text">Sign In</span>
+          </button>
+        </form>
+
+        <p class="auth-footer">
+          Don't have an account? <a href="register.html">Create one free →</a>
+        </p>
+
+      </div>
+    </main>
+
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

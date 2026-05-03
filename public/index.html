@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Resume Builder — Enter your details and job description to generate a professional, tailored resume with the power of AI.">
+  <title>AI Resume Builder — Create Your Resume</title>
+
+  <!-- jsPDF + html2canvas for styled PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- Marked.js for markdown to HTML -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="page-wrapper">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-inner">
+        <a href="index.html" class="nav-brand">
+          <div class="nav-brand-icon">✦</div>
+          <span class="nav-brand-text">ResumeAI</span>
+        </a>
+        <div class="nav-links">
+          <span class="badge badge-ai">✨ AI Powered</span>
+          <button class="nav-btn-logout" id="logoutBtn" onclick="logout()">Sign Out</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Builder Layout -->
+    <main class="builder-layout">
+
+      <!-- ===== LEFT PANEL: Form ===== -->
+      <section class="panel panel-left">
+
+        <div class="panel-header">
+          <div class="panel-header-icon">📝</div>
+          <div>
+            <h2>Your Details</h2>
+            <p>Fill in your information to build your resume</p>
+          </div>
+        </div>
+
+        <!-- Personal Info -->
+        <div class="section-label">
+          <span>👤 Personal Info</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name</label>
+          <input class="form-input" type="text" id="name" placeholder="e.g. Rajesh Boddu" autocomplete="name">
+        </div>
+
+        <!-- Skills -->
+        <div class="section-label">
+          <span>🛠️ Skills</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="skills">Technical & Soft Skills</label>
+          <textarea class="form-textarea" id="skills" placeholder="e.g. JavaScript, React, Node.js, Python, Team Leadership, Communication..." rows="3"></textarea>
+        </div>
+
+        <!-- Education -->
+        <div class="section-label">
+          <span>🎓 Education</span>
+        </div>
+
+        <div id="educationEntries">
+          <!-- Education Entry 1 -->
+          <div class="edu-entry" data-entry="1">
+            <div class="edu-entry-header">
+              <span class="edu-entry-number">Education #1</span>
+            </div>
+            <div class="edu-row">
+              <div class="form-group edu-half">
+                <label class="form-label">Degree Type</label>
+                <select class="form-input edu-degree">
+                  <option value="">Select Degree...</option>
+                  <optgroup label="Undergraduate">
+                    <option value="B.Tech">B.Tech (Bachelor of Technology)</option>
+                    <option value="B.E.">B.E. (Bachelor of Engineering)</option>
+                    <option value="B.Sc">B.Sc (Bachelor of Science)</option>
+                    <option value="B.Com">B.Com (Bachelor of Commerce)</option>
+                    <option value="B.A.">B.A. (Bachelor of Arts)</option>
+                    <option value="BBA">BBA (Bachelor of Business Admin)</option>
+                    <option value="BCA">BCA (Bachelor of Computer App)</option>
+                    <option value="B.Pharm">B.Pharm (Bachelor of Pharmacy)</option>
+                    <option value="MBBS">MBBS</option>
+                    <option value="BDS">BDS (Bachelor of Dental Surgery)</option>
+                    <option value="B.Arch">B.Arch (Bachelor of Architecture)</option>
+                    <option value="LLB">LLB (Bachelor of Law)</option>
+                    <option value="B.Des">B.Des (Bachelor of Design)</option>
+                  </optgroup>
+                  <optgroup label="Postgraduate">
+                    <option value="M.Tech">M.Tech (Master of Technology)</option>
+                    <option value="M.E.">M.E. (Master of Engineering)</option>
+                    <option value="M.Sc">M.Sc (Master of Science)</option>
+                    <option value="MBA">MBA (Master of Business Admin)</option>
+                    <option value="MCA">MCA (Master of Computer App)</option>
+                    <option value="M.Com">M.Com (Master of Commerce)</option>
+                    <option value="M.A.">M.A. (Master of Arts)</option>
+                    <option value="M.Pharm">M.Pharm (Master of Pharmacy)</option>
+                    <option value="MD">MD (Doctor of Medicine)</option>
+                    <option value="LLM">LLM (Master of Law)</option>
+                    <option value="M.Des">M.Des (Master of Design)</option>
+                  </optgroup>
+                  <optgroup label="Diploma & Others">
+                    <option value="Diploma">Diploma</option>
+                    <option value="Polytechnic Diploma">Polytechnic Diploma</option>
+                    <option value="Ph.D.">Ph.D. (Doctorate)</option>
+                    <option value="PG Diploma">PG Diploma</option>
+                    <option value="Certificate">Certificate Course</option>
+                    <option value="12th (HSC)">12th (HSC / Intermediate)</option>
+                    <option value="10th (SSC)">10th (SSC / Matriculation)</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group edu-half">
+                <label class="form-label">Specialization / Branch</label>
+                <input class="form-input edu-specialization" type="text" placeholder="e.g. Computer Science, ECE, Mechanical...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">College / Institute</label>
+              <input class="form-input edu-college" type="text" list="collegeList" placeholder="Search college name..." autocomplete="off">
+            </div>
+            <div class="edu-row">
+              <div class="form-group edu-third">
+                <label class="form-label">Start Year</label>
+                <input class="form-input edu-start" type="number" min="1990" max="2030" placeholder="2020">
+              </div>
+              <div class="form-group edu-third">
+                <label class="form-label">End Year</label>
+                <input class="form-input edu-end" type="number" min="1990" max="2035" placeholder="2024">
+              </div>
+              <div class="form-group edu-third">
+                <label class="form-label">GPA / %</label>
+                <input class="form-input edu-gpa" type="text" placeholder="e.g. 8.5 or 85%">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary mt-1" id="addEducationBtn" onclick="addEducation()" type="button">
+          <span class="btn-text">➕ Add Another Education</span>
+        </button>
+
+        <!-- Hidden textarea for backward compatibility -->
+        <textarea id="education" style="display:none;"></textarea>
+
+        <!-- College Datalist -->
+        <datalist id="collegeList">
+          <!-- IITs -->
+          <option value="IIT Bombay">
+          <option value="IIT Delhi">
+          <option value="IIT Madras">
+          <option value="IIT Kanpur">
+          <option value="IIT Kharagpur">
+          <option value="IIT Roorkee">
+          <option value="IIT Guwahati">
+          <option value="IIT Hyderabad">
+          <option value="IIT Indore">
+          <option value="IIT (BHU) Varanasi">
+          <option value="IIT Ropar">
+          <option value="IIT Bhubaneswar">
+          <option value="IIT Gandhinagar">
+          <option value="IIT Patna">
+          <option value="IIT Jodhpur">
+          <option value="IIT Mandi">
+          <option value="IIT Tirupati">
+          <option value="IIT Palakkad">
+          <option value="IIT Dharwad">
+          <option value="IIT Bhilai">
+          <option value="IIT Goa">
+          <option value="IIT Jammu">
+          <option value="IIT Dhanbad (ISM)">
+          <!-- NITs -->
+          <option value="NIT Trichy">
+          <option value="NIT Warangal">
+          <option value="NIT Surathkal (NITK)">
+          <option value="NIT Calicut">
+          <option value="NIT Rourkela">
+          <option value="NIT Allahabad (MNNIT)">
+          <option value="NIT Kurukshetra">
+          <option value="NIT Durgapur">
+          <option value="NIT Jamshedpur">
+          <option value="NIT Silchar">
+          <option value="NIT Srinagar">
+          <option value="NIT Hamirpur">
+          <option value="NIT Jalandhar">
+          <option value="NIT Nagpur (VNIT)">
+          <option value="NIT Bhopal (MANIT)">
+          <option value="NIT Patna">
+          <option value="NIT Raipur">
+          <option value="NIT Agartala">
+          <option value="NIT Jaipur (MNIT)">
+          <option value="NIT Surat (SVNIT)">
+          <option value="NIT Meghalaya">
+          <option value="NIT Mizoram">
+          <option value="NIT Manipur">
+          <option value="NIT Arunachal Pradesh">
+          <option value="NIT Sikkim">
+          <option value="NIT Goa">
+          <option value="NIT Delhi">
+          <option value="NIT Uttarakhand">
+          <option value="NIT Andhra Pradesh">
+          <option value="NIT Puducherry">
+          <option value="NIT Nagaland">
+          <!-- IIITs -->
+          <option value="IIIT Hyderabad">
+          <option value="IIIT Allahabad">
+          <option value="IIIT Delhi (IIITD)">
+          <option value="IIIT Bangalore">
+          <option value="IIIT Jabalpur (ABV-IIITM)">
+          <option value="IIIT Sri City">
+          <option value="IIIT Lucknow">
+          <option value="IIIT Kurnool">
+          <option value="IIIT Guwahati">
+          <option value="IIIT Vadodara">
+          <option value="IIIT Kota">
+          <option value="IIIT Una">
+          <option value="IIIT Sonepat">
+          <option value="IIIT Kalyani">
+          <option value="IIIT Dharwad">
+          <option value="IIIT Kottayam">
+          <option value="IIIT Manipur">
+          <option value="IIIT Nagpur">
+          <option value="IIIT Pune">
+          <option value="IIIT Ranchi">
+          <option value="IIIT Surat">
+          <option value="IIIT Tiruchirappalli">
+          <!-- BITS -->
+          <option value="BITS Pilani">
+          <option value="BITS Pilani - Goa Campus">
+          <option value="BITS Pilani - Hyderabad Campus">
+          <!-- Top Private Universities -->
+          <option value="VIT Vellore">
+          <option value="VIT Chennai">
+          <option value="VIT Bhopal">
+          <option value="VIT AP (Amaravati)">
+          <option value="SRM Institute of Science and Technology">
+          <option value="SRM University AP">
+          <option value="Manipal Institute of Technology">
+          <option value="Amity University">
+          <option value="LPU (Lovely Professional University)">
+          <option value="Shiv Nadar University">
+          <option value="Ashoka University">
+          <option value="FLAME University">
+          <option value="Symbiosis International University">
+          <option value="Christ University Bangalore">
+          <option value="Thapar Institute of Engineering">
+          <option value="KIIT University Bhubaneswar">
+          <option value="Chandigarh University">
+          <option value="Sharda University">
+          <option value="Chitkara University">
+          <option value="Jain University Bangalore">
+          <option value="PES University Bangalore">
+          <option value="RV College of Engineering">
+          <option value="BMS College of Engineering">
+          <option value="DSCE (Dayananda Sagar)">
+          <option value="Ramaiah Institute of Technology">
+          <option value="Sathyabama Institute of Science and Technology">
+          <option value="Saveetha Engineering College">
+          <option value="Amrita Vishwa Vidyapeetham">
+          <option value="SASTRA University Thanjavur">
+          <option value="PSG College of Technology">
+          <option value="Koneru Lakshmaiah Education Foundation (KL University)">
+          <option value="KL University (KLEF)">
+          <option value="GITAM University">
+          <option value="Vignan University">
+          <option value="Sreenidhi Institute of Science and Technology">
+          <option value="CBIT Hyderabad">
+          <option value="VNRVJIET Hyderabad">
+          <option value="Vasavi College of Engineering">
+          <option value="Malla Reddy Engineering College">
+          <option value="JNTU Hyderabad">
+          <option value="JNTU Kakinada">
+          <option value="Andhra University Visakhapatnam">
+          <option value="Sri Venkateswara University Tirupati">
+          <option value="IIITDM Kancheepuram">
+          <option value="College of Engineering Pune (COEP)">
+          <option value="VJTI Mumbai">
+          <option value="ICT Mumbai (UDCT)">
+          <option value="DJ Sanghvi College of Engineering">
+          <option value="Sardar Patel Institute of Technology">
+          <option value="K.J. Somaiya College of Engineering">
+          <option value="MIT Pune">
+          <option value="Symbiosis Institute of Technology">
+          <!-- State Universities -->
+          <option value="Delhi University (DU)">
+          <option value="Mumbai University">
+          <option value="Anna University Chennai">
+          <option value="Osmania University Hyderabad">
+          <option value="Jadavpur University Kolkata">
+          <option value="Pune University (SPPU)">
+          <option value="Bangalore University">
+          <option value="Madras University">
+          <option value="Calcutta University">
+          <option value="Gujarat University">
+          <option value="Rajasthan University">
+          <option value="Utkal University">
+          <option value="Lucknow University">
+          <option value="Banaras Hindu University (BHU)">
+          <option value="Aligarh Muslim University (AMU)">
+          <option value="Jamia Millia Islamia">
+          <option value="JNU (Jawaharlal Nehru University)">
+          <!-- IIMs -->
+          <option value="IIM Ahmedabad">
+          <option value="IIM Bangalore">
+          <option value="IIM Calcutta">
+          <option value="IIM Lucknow">
+          <option value="IIM Kozhikode">
+          <option value="IIM Indore">
+          <!-- Medical -->
+          <option value="AIIMS Delhi">
+          <option value="AIIMS Bhopal">
+          <option value="AIIMS Jodhpur">
+          <option value="CMC Vellore">
+          <option value="JIPMER Puducherry">
+          <option value="KMC Manipal">
+          <!-- Others -->
+          <option value="ISI Kolkata">
+          <option value="NIFT Delhi">
+          <option value="NID Ahmedabad">
+          <option value="NLSIU Bangalore">
+          <option value="NALSAR Hyderabad">
+          <option value="IISc Bangalore">
+          <option value="IISER Pune">
+          <option value="IISER Bhopal">
+          <option value="IISER Kolkata">
+          <option value="IISER Mohali">
+          <option value="IISER Thiruvananthapuram">
+          <!-- ===== AP — Autonomous Colleges ===== -->
+          <option value="Aditya Engineering College, Surampalem (Autonomous)">
+          <option value="Aditya Institute of Technology and Management (AITAM), Tekkali (Autonomous)">
+          <option value="Anil Neerukonda Institute of Technology and Sciences (ANITS), Visakhapatnam (Autonomous)">
+          <option value="Bapatla Engineering College, Bapatla (Autonomous)">
+          <option value="Bonam Venkata Chalamayya Engineering College (BVCEC), Odalarevu (Autonomous)">
+          <option value="Chalapathi Institute of Engineering & Technology, Guntur (Autonomous)">
+          <option value="Gayatri Vidya Parishad College of Engineering (GVPCE), Visakhapatnam (Autonomous)">
+          <option value="GMR Institute of Technology (GMRIT), Rajam (Autonomous)">
+          <option value="Godavari Institute of Engineering & Technology (GIET), Rajahmundry (Autonomous)">
+          <option value="Gudlavalleru Engineering College, Gudlavalleru (Autonomous)">
+          <option value="Kallam Haranadhareddy Institute of Technology, Guntur (Autonomous)">
+          <option value="KKR & KSR Institute of Technology & Sciences (KITS), Guntur (Autonomous)">
+          <option value="Lakireddy Bali Reddy College of Engineering, Mylavaram (Autonomous)">
+          <option value="Lendi Institute of Engineering & Technology, Vizianagaram (Autonomous)">
+          <option value="Maharaj Vijayaram Gajapathi Raj College of Engineering (MVGRCE), Vizianagaram (Autonomous)">
+          <option value="Narasaraopeta Engineering College, Narasaraopet (Autonomous)">
+          <option value="NRI Institute of Technology, Agiripalli (Autonomous)">
+          <option value="PACE Institute of Technology & Sciences, Ongole (Autonomous)">
+          <option value="Pragati Engineering College, Surampalem (Autonomous)">
+          <option value="PVP Siddhartha Institute of Technology, Vijayawada (Autonomous)">
+          <option value="QIS College of Engineering & Technology, Ongole (Autonomous)">
+          <option value="Raghu Engineering College, Visakhapatnam (Autonomous)">
+          <option value="RVR & JC College of Engineering, Guntur (Autonomous)">
+          <option value="Sagi Rama Krishnam Raju (SRKR) Engineering College, Bhimavaram (Autonomous)">
+          <option value="Sasi Institute of Technology & Engineering, Tadepalligudem (Autonomous)">
+          <option value="Shri Vishnu Engineering College for Women, Bhimavaram (Autonomous)">
+          <option value="Sri Vasavi Engineering College, Tadepalligudem (Autonomous)">
+          <option value="Swarnandhra College of Engineering & Technology, Narsapur (Autonomous)">
+          <option value="Vasireddy Venkatadri Institute of Technology (VVIT), Guntur (Autonomous)">
+          <option value="Velagapudi Ramakrishna Siddhartha Engineering College (VRSEC), Vijayawada (Autonomous)">
+          <option value="Vignan's Institute of Information Technology (VIIT), Visakhapatnam (Autonomous)">
+          <option value="Madanapalle Institute of Technology & Science (MITS), Madanapalle (Autonomous)">
+          <option value="G. Pulla Reddy Engineering College (GPREC), Kurnool (Autonomous)">
+          <option value="Sreenidhi Institute of Science and Technology, Hyderabad (Autonomous)">
+          <option value="Sree Vidyanikethan Engineering College, Tirupati (Autonomous)">
+          <option value="Siddharth Institute of Engineering & Technology, Puttur (Autonomous)">
+          <!-- ===== AP — Normal (Affiliated) Colleges — Visakhapatnam ===== -->
+          <option value="Andhra University College of Engineering (AUCE), Visakhapatnam">
+          <option value="Avanthi Institute of Engineering and Technology, Visakhapatnam">
+          <option value="Nadimpalli Satyanarayana Raju Institute of Technology (NSRIT), Visakhapatnam">
+          <option value="Sanketika Vidya Parishad Engineering College, Visakhapatnam">
+          <option value="Chaitanya Engineering College, Visakhapatnam">
+          <option value="Vignan's Institute of Engineering for Women (VIEW), Visakhapatnam">
+          <option value="Sri Sivani College of Engineering, Chilakapalem, Srikakulam">
+          <!-- ===== AP — Normal Colleges — East & West Godavari ===== -->
+          <option value="Sir C.R. Reddy College of Engineering, Eluru">
+          <option value="DNR College of Engineering and Technology, Bhimavaram">
+          <option value="Eluru College of Engineering and Technology, Eluru">
+          <option value="Ideal Institute of Technology, Kakinada">
+          <option value="Kakinada Institute of Engineering and Technology (KIET), Kakinada">
+          <option value="Rajiv Gandhi Memorial College of Engineering and Technology (RGM), Nandyal">
+          <option value="Sri Sunflower College of Engineering & Technology, Lankapalli">
+          <option value="Aditya College of Engineering, Madanapalle">
+          <!-- ===== AP — Normal Colleges — Krishna District ===== -->
+          <option value="D.V.R. & Dr. H.S. MIC College of Technology, Kanchikacherla">
+          <option value="Usha Rama College of Engineering and Technology, Telaprolu">
+          <option value="SRK Institute of Technology, Enikepadu, Vijayawada">
+          <option value="Amrita Sai Institute of Science and Technology, Paritala">
+          <option value="MVR College of Engineering and Technology, Paritala">
+          <option value="Sri Vasavi Institute of Engineering and Technology, Nandamuru">
+          <option value="Potti Sriramulu College of Engineering and Technology, Vijayawada">
+          <option value="KL University College of Engineering, Vaddeswaram">
+          <!-- ===== AP — Normal Colleges — Guntur District ===== -->
+          <option value="Vignan's Foundation for Science, Technology and Research (VFSTR), Vadlamudi">
+          <option value="AC Subba Reddy Siddhartha Institute of Technology, Guntur">
+          <option value="Tenali Engineering College, Tenali">
+          <option value="Mekelle Institute of Technology, Guntur">
+          <option value="Sri Venkateswara Institute of Technology, Guntur">
+          <!-- ===== AP — Normal Colleges — Prakasam District ===== -->
+          <option value="Chirala Engineering College, Chirala">
+          <option value="Vignan's Lara Institute of Technology & Science, Vadlamudi">
+          <option value="Universal College of Engineering & Technology, Perecherla, Guntur">
+          <!-- ===== AP — Normal Colleges — Nellore District ===== -->
+          <option value="NBKR Institute of Science & Technology (NBKRIST), Vidyanagar, Nellore">
+          <option value="Audisankara College of Engineering & Technology, Gudur">
+          <option value="Narayana Engineering College, Nellore">
+          <option value="Geethanjali Institute of Science and Technology, Nellore">
+          <option value="Priyadarshini College of Engineering and Technology, Nellore">
+          <option value="Ramireddy Subbarami Reddy Engineering College (RSREC), Nellore">
+          <option value="Andhra Engineering College, Atmakur, Nellore">
+          <!-- ===== AP — Normal Colleges — Kurnool District ===== -->
+          <option value="G. Pullaiah College of Engineering and Technology, Kurnool">
+          <option value="St. Johns College of Engineering and Technology, Yemmiganur">
+          <option value="Ravindra College of Engineering for Women, Kurnool">
+          <option value="Brindavan Institute of Technology and Science, Kurnool">
+          <option value="Rayalaseema University College of Engineering, Kurnool">
+          <option value="SVR Engineering College, Nandyal">
+          <!-- ===== AP — Normal Colleges — Chittoor District ===== -->
+          <option value="Sri Venkateswara College of Engineering and Technology (SVCET), Chittoor">
+          <option value="Sreenivasa Institute of Technology and Management Studies (SITAMS), Chittoor">
+          <option value="Vemu Institute of Technology, P. Kothakota, Chittoor">
+          <option value="Kuppam Engineering College, Kuppam">
+          <option value="JNTUA College of Engineering, Kalikiri">
+          <option value="Chadalawada Ramanamma Engineering College, Tirupati">
+          <option value="Sri Venkateswara Institute of Medical Sciences (SVIMS), Tirupati">
+          <!-- ===== AP — Normal Colleges — Kadapa (YSR) District ===== -->
+          <option value="Annamacharya Institute of Technology and Sciences (AITS), Rajampet">
+          <option value="Annamacharya Institute of Technology and Sciences (AITS), Tirupati">
+          <option value="JNTUA College of Engineering, Pulivendula">
+          <option value="Rajiv Gandhi University of Knowledge Technologies (RGUKT), Kadapa">
+          <option value="Sri Venkateswara College of Engineering, Kadapa">
+          <!-- ===== AP — Normal Colleges — Anantapur District ===== -->
+          <option value="JNTUA College of Engineering, Anantapur">
+          <option value="Sri Krishnadevaraya University, Anantapur">
+          <option value="Gates Institute of Technology, Gooty, Anantapur">
+          <option value="Santha Institute of Technology, Anantapur">
+          <option value="Rajiv Gandhi University of Knowledge Technologies (RGUKT), Ongole">
+          <option value="Rajiv Gandhi University of Knowledge Technologies (RGUKT), Nuzvid">
+          <option value="Rajiv Gandhi University of Knowledge Technologies (RGUKT), Srikakulam">
+          <!-- ===== AP — Normal Colleges — Vizianagaram & Srikakulam ===== -->
+          <option value="Centurion University of Technology and Management, Vizianagaram">
+          <option value="Rajiv Gandhi University of Knowledge Technologies (RGUKT), Idupulapaya">
+          <option value="GMR Institute of Technology, Rajam, Srikakulam">
+          <option value="Vignan's Nirula Institute of Technology & Science for Women, Guntur">
+        </datalist>
+
+        <!-- Experience -->
+        <div class="section-label">
+          <span>💼 Experience</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="experience">Work Experience</label>
+          <textarea class="form-textarea" id="experience" placeholder="e.g. Frontend Developer Intern at ABC Corp — Built responsive dashboards using React and Material UI..." rows="4"></textarea>
+        </div>
+
+        <!-- Job Description -->
+        <div class="section-label">
+          <span>🎯 Target Job</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="job">Job Title & Description</label>
+          <textarea class="form-textarea" id="job" placeholder="Paste the job description or enter the role you're applying for, e.g. Full Stack Developer — Responsibilities include building REST APIs, leading code reviews..." rows="5"></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-3">
+          <div class="btn-group mb-2">
+            <button class="btn btn-success" id="saveBtn" onclick="saveResume()">
+              <span class="btn-text">💾 Save</span>
+            </button>
+            <button class="btn btn-secondary" id="generateBtn" onclick="generate()">
+              <span class="btn-text">⚡ Quick Generate</span>
+            </button>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-ai" id="aiGenerateBtn" onclick="generateAI()">
+              <span class="btn-text">✨ AI Generate</span>
+            </button>
+            <button class="btn btn-download" id="downloadBtn" onclick="downloadPDF()">
+              <span class="btn-text">📄 Download PDF</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ===== RIGHT PANEL: Preview ===== -->
+      <section class="panel panel-right">
+
+        <div class="panel-header">
+          <div class="panel-header-icon" style="background: var(--gradient-cta);">👁️</div>
+          <div>
+            <h2>Resume Preview</h2>
+            <p>Your generated resume appears here</p>
+          </div>
+          <span class="badge badge-info" style="margin-left: auto;">Live Preview</span>
+        </div>
+
+        <div class="resume-output-wrapper" id="outputWrapper">
+          <div class="resume-document" id="output">
+            <div class="resume-placeholder" id="placeholder">
+              <div class="resume-placeholder-icon">📃</div>
+              <p>Enter your details on the left and click <strong>Quick Generate</strong> or <strong>AI Generate</strong> to preview your resume here.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
