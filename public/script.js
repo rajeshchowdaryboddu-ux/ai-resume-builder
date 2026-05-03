@@ -94,7 +94,7 @@ function addEducation() {
       </div>
       <div class="form-group edu-half">
         <label class="form-label">Specialization / Branch</label>
-        <input class="form-input edu-specialization" type="text" list="branchList" placeholder="e.g. Computer Science, ECE..." autocomplete="off">
+        <input class="form-input edu-specialization" type="text" list="branchList" placeholder="e.g. Computer Science, ECE...">
       </div>
     </div>
     <div class="form-group">
