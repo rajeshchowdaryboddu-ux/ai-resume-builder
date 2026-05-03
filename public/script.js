@@ -296,7 +296,7 @@ function logout() {
 async function saveResume() {
   const name = document.getElementById('name')?.value?.trim();
   const skills = document.getElementById('skills')?.value?.trim();
-  const education = document.getElementById('education')?.value?.trim();
+  const education = getEducationText();
   const experience = document.getElementById('experience')?.value?.trim();
   const job = document.getElementById('job')?.value?.trim();
 
@@ -331,7 +331,7 @@ async function saveResume() {
 function generate() {
   const name = document.getElementById('name')?.value?.trim();
   const skills = document.getElementById('skills')?.value?.trim();
-  const education = document.getElementById('education')?.value?.trim();
+  const education = getEducationText();
   const experience = document.getElementById('experience')?.value?.trim();
   const job = document.getElementById('job')?.value?.trim();
 
@@ -379,7 +379,7 @@ function generate() {
 async function generateAI() {
   const name = document.getElementById('name')?.value?.trim();
   const skills = document.getElementById('skills')?.value?.trim();
-  const education = document.getElementById('education')?.value?.trim();
+  const education = getEducationText();
   const experience = document.getElementById('experience')?.value?.trim();
   const job = document.getElementById('job')?.value?.trim();
 
